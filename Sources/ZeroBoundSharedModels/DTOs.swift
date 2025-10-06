@@ -18,7 +18,7 @@ public struct TransactionDTO: Codable, Hashable {
     public let sourceRawValue: String
     public let createdAt: Date
     public let updatedAt: Date
-    public let account: AccountDTO?
+    public let account: String?
     public let linkedTransactionId: String?
     public let reconciledAt: Date?
     public let budgetAssignments: [BudgetTransactionAssignmentsDTO]?
