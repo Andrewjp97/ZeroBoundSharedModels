@@ -1,6 +1,54 @@
 import Foundation
 
-public struct TransactionDTO: Codable, Hashable {
+public class TransactionDTO: Codable, Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(userId)
+        hasher.combine(externalId)
+        hasher.combine(name)
+        hasher.combine(amount)
+        hasher.combine(currencyCode)
+        hasher.combine(date)
+        hasher.combine(postedDate)
+        hasher.combine(authorizedDate)
+        hasher.combine(merchantName)
+        hasher.combine(category)
+        hasher.combine(memo)
+        hasher.combine(isPending)
+        hasher.combine(isTransfer)
+        hasher.combine(sourceRawValue)
+        hasher.combine(createdAt)
+        hasher.combine(updatedAt)
+        hasher.combine(account)
+        hasher.combine(linkedTransactionId)
+        hasher.combine(reconciledAt)
+        hasher.combine(budgetAssignments)
+    }
+
+    public static func == (lhs: TransactionDTO, rhs: TransactionDTO) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.userId == rhs.userId &&
+            lhs.externalId == rhs.externalId &&
+            lhs.name == rhs.name &&
+            lhs.amount == rhs.amount &&
+            lhs.currencyCode == rhs.currencyCode &&
+            lhs.date == rhs.date &&
+            lhs.postedDate == rhs.postedDate &&
+            lhs.authorizedDate == rhs.authorizedDate &&
+            lhs.merchantName == rhs.merchantName &&
+            lhs.category == rhs.category &&
+            lhs.memo == rhs.memo &&
+            lhs.isPending == rhs.isPending &&
+            lhs.isTransfer == rhs.isTransfer &&
+            lhs.sourceRawValue == rhs.sourceRawValue &&
+            lhs.createdAt == rhs.createdAt &&
+            lhs.updatedAt == rhs.updatedAt &&
+            lhs.account == rhs.account &&
+            lhs.linkedTransactionId == rhs.linkedTransactionId &&
+            lhs.reconciledAt == rhs.reconciledAt &&
+            lhs.budgetAssignments == rhs.budgetAssignments
+    }
 
     public let id: String
     public let userId: String
@@ -50,7 +98,69 @@ public struct TransactionDTO: Codable, Hashable {
 
 }
 
-public struct AccountDTO: Codable, Hashable {
+public class AccountDTO: Codable, Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(userId)
+        hasher.combine(name)
+        hasher.combine(institutionName)
+        hasher.combine(accountNumber)
+        hasher.combine(accountTypeRawValue)
+        hasher.combine(subtype)
+        hasher.combine(currencyCode)
+        hasher.combine(currentBalance)
+        hasher.combine(availableBalance)
+        hasher.combine(creditLimit)
+        hasher.combine(createdAt)
+        hasher.combine(updatedAt)
+        hasher.combine(managementTypeRawValue)
+        hasher.combine(plaidItemId)
+        hasher.combine(plaidAccountId)
+        hasher.combine(linkedAt)
+        hasher.combine(notes)
+        hasher.combine(manualStartingBalance)
+        hasher.combine(liabilityId)
+        hasher.combine(isLiabilityOverdue)
+        hasher.combine(lastPaymentAmount)
+        hasher.combine(lastPaymentDate)
+        hasher.combine(lastStatementBalance)
+        hasher.combine(minimumPaymentAmount)
+        hasher.combine(nextPaymentDueDate)
+        hasher.combine(interestRatePercentage)
+        hasher.combine(transactions)
+    }
+
+    public static func == (lhs: AccountDTO, rhs: AccountDTO) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.userId == rhs.userId &&
+            lhs.name == rhs.name &&
+            lhs.institutionName == rhs.institutionName &&
+            lhs.accountNumber == rhs.accountNumber &&
+            lhs.accountTypeRawValue == rhs.accountTypeRawValue &&
+            lhs.subtype == rhs.subtype &&
+            lhs.currencyCode == rhs.currencyCode &&
+            lhs.currentBalance == rhs.currentBalance &&
+            lhs.availableBalance == rhs.availableBalance &&
+            lhs.creditLimit == rhs.creditLimit &&
+            lhs.createdAt == rhs.createdAt &&
+            lhs.updatedAt == rhs.updatedAt &&
+            lhs.managementTypeRawValue == rhs.managementTypeRawValue &&
+            lhs.plaidItemId == rhs.plaidItemId &&
+            lhs.plaidAccountId == rhs.plaidAccountId &&
+            lhs.linkedAt == rhs.linkedAt &&
+            lhs.notes == rhs.notes &&
+            lhs.manualStartingBalance == rhs.manualStartingBalance &&
+            lhs.liabilityId == rhs.liabilityId &&
+            lhs.isLiabilityOverdue == rhs.isLiabilityOverdue &&
+            lhs.lastPaymentAmount == rhs.lastPaymentAmount &&
+            lhs.lastPaymentDate == rhs.lastPaymentDate &&
+            lhs.lastStatementBalance == rhs.lastStatementBalance &&
+            lhs.minimumPaymentAmount == rhs.minimumPaymentAmount &&
+            lhs.nextPaymentDueDate == rhs.nextPaymentDueDate &&
+            lhs.interestRatePercentage == rhs.interestRatePercentage &&
+            lhs.transactions == rhs.transactions
+    }
 
     public let id: String
     public let userId: String
@@ -114,7 +224,31 @@ public struct AccountDTO: Codable, Hashable {
 
 }
 
-public struct BudgetDTO: Codable, Hashable {
+public class BudgetDTO: Codable, Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(userId)
+        hasher.combine(name)
+        hasher.combine(startDate)
+        hasher.combine(currencyCode)
+        hasher.combine(owner)
+        hasher.combine(categories)
+        hasher.combine(months)
+        hasher.combine(updatedAt)
+    }
+
+    public static func == (lhs: BudgetDTO, rhs: BudgetDTO) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.userId == rhs.userId &&
+            lhs.name == rhs.name &&
+            lhs.startDate == rhs.startDate &&
+            lhs.currencyCode == rhs.currencyCode &&
+            lhs.owner == rhs.owner &&
+            lhs.categories == rhs.categories &&
+            lhs.months == rhs.months &&
+            lhs.updatedAt == rhs.updatedAt
+    }
 
     public let id: String
     public let userId: String
@@ -140,7 +274,25 @@ public struct BudgetDTO: Codable, Hashable {
 
 }
 
-public struct BudgetCategoryDTO: Codable, Hashable {
+public class BudgetCategoryDTO: Codable, Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(userId)
+        hasher.combine(name)
+        hasher.combine(kindRawValue)
+        hasher.combine(budget)
+        hasher.combine(assignments)
+    }
+
+    public static func == (lhs: BudgetCategoryDTO, rhs: BudgetCategoryDTO) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.userId == rhs.userId &&
+            lhs.name == rhs.name &&
+            lhs.kindRawValue == rhs.kindRawValue &&
+            lhs.budget == rhs.budget &&
+            lhs.assignments == rhs.assignments
+    }
 
     public let id: String
     public let userId: String
@@ -160,7 +312,25 @@ public struct BudgetCategoryDTO: Codable, Hashable {
 
 }
 
-public struct BudgetMonthDTO: Codable, Hashable {
+public class BudgetMonthDTO: Codable, Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(userId)
+        hasher.combine(monthStart)
+        hasher.combine(updatedAt)
+        hasher.combine(budget)
+        hasher.combine(assignments)
+    }
+
+    public static func == (lhs: BudgetMonthDTO, rhs: BudgetMonthDTO) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.userId == rhs.userId &&
+            lhs.monthStart == rhs.monthStart &&
+            lhs.updatedAt == rhs.updatedAt &&
+            lhs.budget == rhs.budget &&
+            lhs.assignments == rhs.assignments
+    }
 
     public let id: String
     public let userId: String
@@ -180,7 +350,25 @@ public struct BudgetMonthDTO: Codable, Hashable {
 
 }
 
-public struct BudgetTransactionAssignmentsDTO: Codable, Hashable {
+public class BudgetTransactionAssignmentsDTO: Codable, Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(userId)
+        hasher.combine(transaction)
+        hasher.combine(category)
+        hasher.combine(month)
+        hasher.combine(assignedAmount)
+    }
+
+    public static func == (lhs: BudgetTransactionAssignmentsDTO, rhs: BudgetTransactionAssignmentsDTO) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.userId == rhs.userId &&
+            lhs.transaction == rhs.transaction &&
+            lhs.category == rhs.category &&
+            lhs.month == rhs.month &&
+            lhs.assignedAmount == rhs.assignedAmount
+    }
 
     public let id: String
     public let userId: String
@@ -200,7 +388,31 @@ public struct BudgetTransactionAssignmentsDTO: Codable, Hashable {
 
 }
 
-public struct UserDataDTO: Codable, Hashable {
+public class UserDataDTO: Codable, Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(userId)
+        hasher.combine(userName)
+        hasher.combine(email)
+        hasher.combine(basePayStoredAmount)
+        hasher.combine(basePayTypeRawValue)
+        hasher.combine(basePayCurrencyCode)
+        hasher.combine(budgets)
+        hasher.combine(activeBudgetId)
+    }
+
+    public static func == (lhs: UserDataDTO, rhs: UserDataDTO) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.userId == rhs.userId &&
+            lhs.userName == rhs.userName &&
+            lhs.email == rhs.email &&
+            lhs.basePayStoredAmount == rhs.basePayStoredAmount &&
+            lhs.basePayTypeRawValue == rhs.basePayTypeRawValue &&
+            lhs.basePayCurrencyCode == rhs.basePayCurrencyCode &&
+            lhs.budgets == rhs.budgets &&
+            lhs.activeBudgetId == rhs.activeBudgetId
+    }
 
     public let id: String
     public let userId: String
