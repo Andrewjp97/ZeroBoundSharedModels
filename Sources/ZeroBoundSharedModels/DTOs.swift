@@ -3,6 +3,7 @@ import Foundation
 public struct TransactionDTO: Codable, Hashable {
 
     public let id: String
+    public let userId: String
     public let externalId: String?
     public let name: String
     public let amount: Double
@@ -28,6 +29,7 @@ public struct TransactionDTO: Codable, Hashable {
 public struct AccountDTO: Codable, Hashable {
 
     public let id: String
+    public let userId: String
     public let name: String
     public let institutionName: String?
     public let accountNumber: String?
@@ -61,6 +63,7 @@ public struct AccountDTO: Codable, Hashable {
 public struct BudgetDTO: Codable, Hashable {
 
     public let id: String
+    public let userId: String
     public let name: String
     public let startDate: Date
     public let currencyCode: String
@@ -74,6 +77,7 @@ public struct BudgetDTO: Codable, Hashable {
 public struct BudgetCategoryDTO: Codable, Hashable {
 
     public let id: String
+    public let userId: String
     public let name: String
     public let kindRawValue: String
     public let budget: BudgetDTO?
@@ -84,6 +88,7 @@ public struct BudgetCategoryDTO: Codable, Hashable {
 public struct BudgetMonthDTO: Codable, Hashable {
 
     public let id: String
+    public let userId: String
     public let monthStart: Date
     public let updatedAt: Date
     public let budget: BudgetDTO?
@@ -94,6 +99,7 @@ public struct BudgetMonthDTO: Codable, Hashable {
 public struct BudgetTransactionAssignmentsDTO: Codable, Hashable {
 
     public let id: String
+    public let userId: String
     public let transaction: TransactionDTO?
     public let category: BudgetCategoryDTO
     public let month: BudgetMonthDTO
@@ -104,6 +110,7 @@ public struct BudgetTransactionAssignmentsDTO: Codable, Hashable {
 public struct UserDataDTO: Codable, Hashable {
 
     public let id: String
+    public let userId: String
     public let userName: String?
     public let email: String?
     public let basePayStoredAmount: Double?
