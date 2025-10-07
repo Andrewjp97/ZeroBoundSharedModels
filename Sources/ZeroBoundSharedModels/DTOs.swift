@@ -50,29 +50,31 @@ public final class TransactionDTO: Codable, Hashable {
             lhs.budgetAssignments == rhs.budgetAssignments
     }
 
-    public let id: String
-    public let userId: String
-    public let externalId: String?
-    public let name: String
-    public let amount: Double
-    public let currencyCode: String
-    public let date: Date
-    public let postedDate: Date?
-    public let authorizedDate: Date?
-    public let merchantName: String?
-    public let category: String?
-    public let memo: String?
-    public let isPending: Bool
-    public let isTransfer: Bool
-    public let sourceRawValue: String
-    public let createdAt: Date
-    public let updatedAt: Date
-    public let account: String?
-    public let linkedTransactionId: String?
-    public let reconciledAt: Date?
-    public let budgetAssignments: [BudgetTransactionAssignmentsDTO]?
+    public var id: String
+    public var userId: String
+    public var externalId: String?
+    public var name: String
+    public var amount: Double
+    public var currencyCode: String
+    public var date: Date
+    public var postedDate: Date?
+    public var authorizedDate: Date?
+    public var merchantName: String?
+    public var category: String?
+    public var memo: String?
+    public var isPending: Bool
+    public var isTransfer: Bool
+    public var sourceRawValue: String
+    public var createdAt: Date
+    public var updatedAt: Date
+    public var account: String?
+    public var linkedTransactionId: String?
+    public var reconciledAt: Date?
+    public var budgetAssignments: [BudgetTransactionAssignmentsDTO]?
 
-    init(id: String, userId: String, externalId: String? = nil, name: String, amount: Double, currencyCode: String, date: Date, postedDate: Date? = nil, authorizedDate: Date? = nil, merchantName: String? = nil, category: String? = nil, memo: String? = nil, isPending: Bool, isTransfer: Bool, sourceRawValue: String, createdAt: Date, updatedAt: Date, account: String? = nil, linkedTransactionId: String? = nil, reconciledAt: Date? = nil, budgetAssignments: [BudgetTransactionAssignmentsDTO]? = nil) {
+    convenience init(id: String, userId: String, externalId: String? = nil, name: String, amount: Double, currencyCode: String, date: Date, postedDate: Date? = nil, authorizedDate: Date? = nil, merchantName: String? = nil, category: String? = nil, memo: String? = nil, isPending: Bool, isTransfer: Bool, sourceRawValue: String, createdAt: Date, updatedAt: Date, account: String? = nil, linkedTransactionId: String? = nil, reconciledAt: Date? = nil, budgetAssignments: [BudgetTransactionAssignmentsDTO]? = nil) {
+       self.init()
+       
         self.id = id
         self.userId = userId
         self.externalId = externalId
@@ -94,6 +96,30 @@ public final class TransactionDTO: Codable, Hashable {
         self.linkedTransactionId = linkedTransactionId
         self.reconciledAt = reconciledAt
         self.budgetAssignments = budgetAssignments
+    }
+
+    init() {
+        self.id = ""
+        self.userId = ""
+        self.externalId = nil
+        self.name = ""
+        self.amount = 0.0
+        self.currencyCode = ""
+        self.date = Date()
+        self.postedDate = nil
+        self.authorizedDate = nil
+        self.merchantName = nil
+        self.category = nil
+        self.memo = nil
+        self.isPending = false
+        self.isTransfer = false
+        self.sourceRawValue = ""
+        self.createdAt = Date()
+        self.updatedAt = Date()
+        self.account = nil
+        self.linkedTransactionId = nil
+        self.reconciledAt = nil
+        self.budgetAssignments = nil
     }
 
 }
@@ -162,36 +188,38 @@ public final class AccountDTO: Codable, Hashable {
             lhs.transactions == rhs.transactions
     }
 
-    public let id: String
-    public let userId: String
-    public let name: String
-    public let institutionName: String?
-    public let accountNumber: String?
-    public let accountTypeRawValue: String?
-    public let subtype: String?
-    public let currencyCode: String
-    public let currentBalance: Double
-    public let availableBalance: Double?
-    public let creditLimit: Double?
-    public let createdAt: Date
-    public let updatedAt: Date
-    public let managementTypeRawValue: String
-    public let plaidItemId: String?
-    public let plaidAccountId: String?
-    public let linkedAt: Date?
-    public let notes: String?
-    public let manualStartingBalance: Double?
-    public let liabilityId: String?
-    public let isLiabilityOverdue: Bool
-    public let lastPaymentAmount: Double?
-    public let lastPaymentDate: Date?
-    public let lastStatementBalance: Double?
-    public let minimumPaymentAmount: Double?
-    public let nextPaymentDueDate: Date?
-    public let interestRatePercentage: Double?
-    public let transactions: [TransactionDTO]?
+    public var id: String
+    public var userId: String
+    public var name: String
+    public var institutionName: String?
+    public var accountNumber: String?
+    public var accountTypeRawValue: String?
+    public var subtype: String?
+    public var currencyCode: String
+    public var currentBalance: Double
+    public var availableBalance: Double?
+    public var creditLimit: Double?
+    public var createdAt: Date
+    public var updatedAt: Date
+    public var managementTypeRawValue: String
+    public var plaidItemId: String?
+    public var plaidAccountId: String?
+    public var linkedAt: Date?
+    public var notes: String?
+    public var manualStartingBalance: Double?
+    public var liabilityId: String?
+    public var isLiabilityOverdue: Bool
+    public var lastPaymentAmount: Double?
+    public var lastPaymentDate: Date?
+    public var lastStatementBalance: Double?
+    public var minimumPaymentAmount: Double?
+    public var nextPaymentDueDate: Date?
+    public var interestRatePercentage: Double?
+    public var transactions: [TransactionDTO]?
 
-    init(id: String, userId: String, name: String, institutionName: String? = nil, accountNumber: String? = nil, accountTypeRawValue: String? = nil, subtype: String? = nil, currencyCode: String, currentBalance: Double, availableBalance: Double? = nil, creditLimit: Double? = nil, createdAt: Date, updatedAt: Date, managementTypeRawValue: String, plaidItemId: String? = nil, plaidAccountId: String? = nil, linkedAt: Date? = nil, notes: String? = nil, manualStartingBalance: Double? = nil, liabilityId: String? = nil, isLiabilityOverdue: Bool = false, lastPaymentAmount: Double? = nil, lastPaymentDate: Date? = nil, lastStatementBalance: Double? = nil, minimumPaymentAmount: Double? = nil, nextPaymentDueDate: Date? = nil, interestRatePercentage: Double? = nil, transactions: [TransactionDTO]? = nil) {
+    convenience init(id: String, userId: String, name: String, institutionName: String? = nil, accountNumber: String? = nil, accountTypeRawValue: String? = nil, subtype: String? = nil, currencyCode: String, currentBalance: Double, availableBalance: Double? = nil, creditLimit: Double? = nil, createdAt: Date, updatedAt: Date, managementTypeRawValue: String, plaidItemId: String? = nil, plaidAccountId: String? = nil, linkedAt: Date? = nil, notes: String? = nil, manualStartingBalance: Double? = nil, liabilityId: String? = nil, isLiabilityOverdue: Bool = false, lastPaymentAmount: Double? = nil, lastPaymentDate: Date? = nil, lastStatementBalance: Double? = nil, minimumPaymentAmount: Double? = nil, nextPaymentDueDate: Date? = nil, interestRatePercentage: Double? = nil, transactions: [TransactionDTO]? = nil) {
+        self.init()
+        
         self.id = id
         self.userId = userId
         self.name = name
@@ -222,6 +250,37 @@ public final class AccountDTO: Codable, Hashable {
         self.transactions = transactions
     }
 
+    init() {
+        self.id = ""
+        self.userId = ""
+        self.name = ""
+        self.institutionName = nil
+        self.accountNumber = nil
+        self.accountTypeRawValue = nil
+        self.subtype = nil
+        self.currencyCode = ""
+        self.currentBalance = 0.0
+        self.availableBalance = nil
+        self.creditLimit = nil
+        self.createdAt = Date()
+        self.updatedAt = Date()
+        self.managementTypeRawValue = ""
+        self.plaidItemId = nil
+        self.plaidAccountId = nil
+        self.linkedAt = nil
+        self.notes = nil
+        self.manualStartingBalance = nil
+        self.liabilityId = nil
+        self.isLiabilityOverdue = false
+        self.lastPaymentAmount = nil
+        self.lastPaymentDate = nil
+        self.lastStatementBalance = nil
+        self.minimumPaymentAmount = nil
+        self.nextPaymentDueDate = nil
+        self.interestRatePercentage = nil
+        self.transactions = nil
+    }
+
 }
 
 public final class BudgetDTO: Codable, Hashable {
@@ -250,17 +309,19 @@ public final class BudgetDTO: Codable, Hashable {
             lhs.updatedAt == rhs.updatedAt
     }
 
-    public let id: String
-    public let userId: String
-    public let name: String
-    public let startDate: Date
-    public let currencyCode: String
-    public let owner: UserDataDTO?
-    public let categories: [BudgetCategoryDTO]?
-    public let months: [BudgetMonthDTO]?
-    public let updatedAt: Date
+    public var id: String
+    public var userId: String
+    public var name: String
+    public var startDate: Date
+    public var currencyCode: String
+    public var owner: UserDataDTO?
+    public var categories: [BudgetCategoryDTO]?
+    public var months: [BudgetMonthDTO]?
+    public var updatedAt: Date
 
-    init(id: String, userId: String, name: String, startDate: Date, currencyCode: String, owner: UserDataDTO? = nil, categories: [BudgetCategoryDTO]? = nil, months: [BudgetMonthDTO]? = nil, updatedAt: Date) {
+    convenience init(id: String, userId: String, name: String, startDate: Date, currencyCode: String, owner: UserDataDTO? = nil, categories: [BudgetCategoryDTO]? = nil, months: [BudgetMonthDTO]? = nil, updatedAt: Date) {
+        self.init()
+
         self.id = id
         self.userId = userId
         self.name = name
@@ -270,6 +331,18 @@ public final class BudgetDTO: Codable, Hashable {
         self.categories = categories
         self.months = months
         self.updatedAt = updatedAt
+    }
+
+    init() {
+        self.id = ""
+        self.userId = ""
+        self.name = ""
+        self.startDate = Date()
+        self.currencyCode = ""
+        self.owner = nil
+        self.categories = nil
+        self.months = nil
+        self.updatedAt = Date()
     }
 
 }
@@ -332,20 +405,31 @@ public final class BudgetMonthDTO: Codable, Hashable {
             lhs.assignments == rhs.assignments
     }
 
-    public let id: String
-    public let userId: String
-    public let monthStart: Date
-    public let updatedAt: Date
-    public let budget: BudgetDTO?
-    public let assignments: [BudgetTransactionAssignmentsDTO]?
+    public var id: String
+    public var userId: String
+    public var monthStart: Date
+    public var updatedAt: Date
+    public var budget: BudgetDTO?
+    public var assignments: [BudgetTransactionAssignmentsDTO]?
 
-    init(id: String, userId: String, monthStart: Date, updatedAt: Date, budget: BudgetDTO? = nil, assignments: [BudgetTransactionAssignmentsDTO]? = nil) {
+    convenience init(id: String, userId: String, monthStart: Date, updatedAt: Date, budget: BudgetDTO? = nil, assignments: [BudgetTransactionAssignmentsDTO]? = nil) {
+        self.init()
+
         self.id = id
         self.userId = userId
         self.monthStart = monthStart
         self.updatedAt = updatedAt
         self.budget = budget
         self.assignments = assignments
+    }
+
+    init() {
+        self.id = ""
+        self.userId = ""
+        self.monthStart = Date()
+        self.updatedAt = Date()
+        self.budget = nil
+        self.assignments = nil
     }
 
 }
@@ -370,20 +454,31 @@ public final class BudgetTransactionAssignmentsDTO: Codable, Hashable {
             lhs.assignedAmount == rhs.assignedAmount
     }
 
-    public let id: String
-    public let userId: String
-    public let transaction: TransactionDTO?
-    public let category: BudgetCategoryDTO
-    public let month: BudgetMonthDTO
-    public let assignedAmount: Double
+    public var id: String
+    public var userId: String
+    public var transaction: TransactionDTO?
+    public var category: BudgetCategoryDTO
+    public var month: BudgetMonthDTO
+    public var assignedAmount: Double
 
-    init(id: String, userId: String, transaction: TransactionDTO? = nil, category: BudgetCategoryDTO, month: BudgetMonthDTO, assignedAmount: Double) {
+    convenience init(id: String, userId: String, transaction: TransactionDTO? = nil, category: BudgetCategoryDTO, month: BudgetMonthDTO, assignedAmount: Double) {
+        self.init()
+
         self.id = id
         self.userId = userId
         self.transaction = transaction
         self.category = category
         self.month = month
         self.assignedAmount = assignedAmount
+    }
+
+    init() {
+        self.id = ""
+        self.userId = ""
+        self.transaction = nil
+        self.category = BudgetCategoryDTO(id: "", userId: "", name: "", kindRawValue: "")
+        self.month = BudgetMonthDTO(id: "", userId: "", monthStart: Date(), updatedAt: Date())
+        self.assignedAmount = 0.0
     }
 
 }
@@ -414,17 +509,20 @@ public final class UserDataDTO: Codable, Hashable {
             lhs.activeBudgetId == rhs.activeBudgetId
     }
 
-    public let id: String
-    public let userId: String
-    public let userName: String?
-    public let email: String?
-    public let basePayStoredAmount: Double?
-    public let basePayTypeRawValue: String?
-    public let basePayCurrencyCode: String?
-    public let budgets: [BudgetDTO]?
-    public let activeBudgetId: String?
+    public var id: String
+    public var userId: String
+    public var userName: String?
+    public var email: String?
+    public var basePayStoredAmount: Double?
+    public var basePayTypeRawValue: String?
+    public var basePayCurrencyCode: String?
+    public var budgets: [BudgetDTO]?
+    public var activeBudgetId: String?
 
-    init(id: String, userId: String, userName: String? = nil, email: String? = nil, basePayStoredAmount: Double? = nil, basePayTypeRawValue: String? = nil, basePayCurrencyCode: String? = nil, budgets: [BudgetDTO]? = nil, activeBudgetId: String? = nil) {
+    convenience init(id: String, userId: String, userName: String? = nil, email: String? = nil, basePayStoredAmount: Double? = nil, basePayTypeRawValue: String? = nil, basePayCurrencyCode: String? = nil, budgets: [BudgetDTO]? = nil, activeBudgetId: String? = nil) {
+       
+        self.init()
+
         self.id = id
         self.userId = userId
         self.userName = userName
@@ -434,6 +532,19 @@ public final class UserDataDTO: Codable, Hashable {
         self.basePayCurrencyCode = basePayCurrencyCode
         self.budgets = budgets
         self.activeBudgetId = activeBudgetId
+
+    }
+
+    init(){
+        self.id = ""
+        self.userId = ""
+        self.userName = nil
+        self.email = nil
+        self.basePayStoredAmount = nil
+        self.basePayTypeRawValue = nil
+        self.basePayCurrencyCode = nil
+        self.budgets = nil
+        self.activeBudgetId = nil
     }
 
 }
