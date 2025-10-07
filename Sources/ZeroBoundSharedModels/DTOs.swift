@@ -1,6 +1,6 @@
 import Foundation
 
-public class TransactionDTO: Codable, Hashable {
+public final class TransactionDTO: Codable, Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -98,7 +98,7 @@ public class TransactionDTO: Codable, Hashable {
 
 }
 
-public class AccountDTO: Codable, Hashable {
+public final class AccountDTO: Codable, Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -224,7 +224,7 @@ public class AccountDTO: Codable, Hashable {
 
 }
 
-public class BudgetDTO: Codable, Hashable {
+public final class BudgetDTO: Codable, Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -274,7 +274,7 @@ public class BudgetDTO: Codable, Hashable {
 
 }
 
-public class BudgetCategoryDTO: Codable, Hashable {
+public final class BudgetCategoryDTO: Codable, Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -312,7 +312,7 @@ public class BudgetCategoryDTO: Codable, Hashable {
 
 }
 
-public class BudgetMonthDTO: Codable, Hashable {
+public final class BudgetMonthDTO: Codable, Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -350,7 +350,7 @@ public class BudgetMonthDTO: Codable, Hashable {
 
 }
 
-public class BudgetTransactionAssignmentsDTO: Codable, Hashable {
+public final class BudgetTransactionAssignmentsDTO: Codable, Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -388,7 +388,7 @@ public class BudgetTransactionAssignmentsDTO: Codable, Hashable {
 
 }
 
-public class UserDataDTO: Codable, Hashable {
+public final class UserDataDTO: Codable, Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
