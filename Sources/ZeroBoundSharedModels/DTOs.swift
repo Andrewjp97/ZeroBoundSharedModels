@@ -3,6 +3,7 @@ import Foundation
 // MARK: - TransactionDTO
 public final class TransactionDTO: Codable, Hashable {
     public var id: UUID
+    public var userId: UUID
     public var accountId: String
     public var accountOwner: String?
     public var amount: Double
@@ -40,6 +41,7 @@ public final class TransactionDTO: Codable, Hashable {
 
     public init(
         id: UUID = UUID(),
+        userId: UUID,
         accountId: String,
         accountOwner: String? = nil,
         amount: Double,
@@ -74,6 +76,7 @@ public final class TransactionDTO: Codable, Hashable {
         account: AccountDTO? = nil
     ) {
         self.id = id
+        self.userId = userId
         self.accountId = accountId
         self.accountOwner = accountOwner
         self.amount = amount
@@ -109,12 +112,13 @@ public final class TransactionDTO: Codable, Hashable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case id, accountId, accountOwner, amount, isoCurrencyCode, unofficialCurrencyCode, checkNumber, date, location, name, merchantName, merchantEntityId, originalDescription, paymentMeta, pending, pendingTransactionId, transactionId, transactionType, logoUrl, website, authorizedDate, authorizedDatetime, datetime, paymentChannel, personalFinanceCategory, personalFinanceCategoryIconUrl, transactionCode, manuallyEntered, userEnteredAt, userNotes, userCategoryOverride, userAmendedAmount
+        case id, userId, accountId, accountOwner, amount, isoCurrencyCode, unofficialCurrencyCode, checkNumber, date, location, name, merchantName, merchantEntityId, originalDescription, paymentMeta, pending, pendingTransactionId, transactionId, transactionType, logoUrl, website, authorizedDate, authorizedDatetime, datetime, paymentChannel, personalFinanceCategory, personalFinanceCategoryIconUrl, transactionCode, manuallyEntered, userEnteredAt, userNotes, userCategoryOverride, userAmendedAmount
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encode(userId, forKey: .userId)
         try container.encode(accountId, forKey: .accountId)
         try container.encodeIfPresent(accountOwner, forKey: .accountOwner)
         try container.encode(amount, forKey: .amount)
@@ -151,6 +155,7 @@ public final class TransactionDTO: Codable, Hashable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        self.userId = try container.decode(UUID.self, forKey: .userId)
         self.accountId = try container.decode(String.self, forKey: .accountId)
         self.accountOwner = try container.decodeIfPresent(String.self, forKey: .accountOwner)
         self.amount = try container.decode(Double.self, forKey: .amount)
@@ -399,6 +404,7 @@ public final class LocationDTO: Codable, Hashable {
 // MARK: - AccountDTO
 public final class AccountDTO: Codable, Hashable {
     public var id: UUID
+    public var userId: UUID
     public var accountId: String
     public var balances: AccountBalancesDTO
     public var mask: String?
@@ -423,6 +429,7 @@ public final class AccountDTO: Codable, Hashable {
 
     public init(
         id: UUID = UUID(),
+        userId: UUID,
         accountId: String,
         balances: AccountBalancesDTO,
         mask: String? = nil,
@@ -440,6 +447,7 @@ public final class AccountDTO: Codable, Hashable {
         transactions: [TransactionDTO] = []
     ) {
         self.id = id
+        self.userId = userId
         self.accountId = accountId
         self.balances = balances
         self.mask = mask
@@ -463,11 +471,12 @@ public final class AccountDTO: Codable, Hashable {
         for t in self.transactions { t.account = self }
     }
 
-    private enum CodingKeys: String, CodingKey { case id, accountId, balances, mask, name, officialName, type, subtype, verificationStatus, verificationName, verificationInsights, item, manualAccount, reconciledBalance, lastUpdated, userEnteredAt, userNotes, userProvidedBalance, userTags, transactions }
+    private enum CodingKeys: String, CodingKey { case id, userId, accountId, balances, mask, name, officialName, type, subtype, verificationStatus, verificationName, verificationInsights, item, manualAccount, reconciledBalance, lastUpdated, userEnteredAt, userNotes, userProvidedBalance, userTags, transactions }
     public func encode(to encoder: Encoder) throws { var c = encoder.container(keyedBy: CodingKeys.self); try c.encode(id, forKey: .id); try c.encode(accountId, forKey: .accountId); try c.encode(balances, forKey: .balances); try c.encodeIfPresent(mask, forKey: .mask); try c.encode(name, forKey: .name); try c.encodeIfPresent(officialName, forKey: .officialName); try c.encode(type, forKey: .type); try c.encodeIfPresent(subtype, forKey: .subtype); try c.encode(verificationStatus, forKey: .verificationStatus); try c.encode(verificationName, forKey: .verificationName); try c.encode(verificationInsights, forKey: .verificationInsights); try c.encode(item, forKey: .item); try c.encode(manualAccount, forKey: .manualAccount); try c.encodeIfPresent(reconciledBalance, forKey: .reconciledBalance); try c.encodeIfPresent(lastUpdated, forKey: .lastUpdated); try c.encodeIfPresent(userEnteredAt, forKey: .userEnteredAt); try c.encodeIfPresent(userNotes, forKey: .userNotes); try c.encodeIfPresent(userProvidedBalance, forKey: .userProvidedBalance); try c.encodeIfPresent(userTags, forKey: .userTags); try c.encode(transactions, forKey: .transactions) }
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try c.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        self.userId = try c.decode(UUID.self, forKey: .userId)
         self.accountId = try c.decode(String.self, forKey: .accountId)
         self.balances = try c.decode(AccountBalancesDTO.self, forKey: .balances)
         self.mask = try c.decodeIfPresent(String.self, forKey: .mask)
