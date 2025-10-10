@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v15)
     ],
     products: [
-        .executable(name: "ZeroBoundSharedModels", targets: ["ZeroBoundSharedModels"])
+        .library(name: "ZeroBoundSharedModels", targets: ["ZeroBoundSharedModels"])
     ],
     dependencies: [
         // Vapor web framework
@@ -25,7 +25,7 @@ let package = Package(
     .package(url: "https://github.com/apple/swift-openapi-urlsession", from: "1.0.0")
     ],
     targets: [
-        .executableTarget(
+        .target(
             name: "ZeroBoundSharedModels",
             dependencies: [
                 .product(name: "PostgresNIO", package: "postgres-nio"),
@@ -39,9 +39,7 @@ let package = Package(
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
                 .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession")
             ],
-            path: "Sources",
-            plugins: [
-                .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator"),
-            ])
+            path: "Sources/ZeroBoundSharedModels"
+        )
     ]
 )
