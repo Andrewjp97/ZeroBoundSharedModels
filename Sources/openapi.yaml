@@ -1,0 +1,1624 @@
+openapi: 3.0.0
+info:
+  title: ZeroBound Server-Client API
+  description: This API communicates between the ZeroBound server and its clients
+  contact:
+    name: Andrew Paterson
+    email: andrew@zerobound.app
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://api.zerobound.online
+  description: ZeroBound Production Server
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+paths:
+  /plaid/link/token/create:
+    get:
+      tags: []
+      summary: PlaidLinkTokenCreate
+      operationId: get-plaid-link-token-create
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaidLinkToken"
+  /plaid/link/token/update:
+    get:
+      tags: []
+      summary: PlaidLinkTokenUpdate
+      operationId: get-plaid-link-token-update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaidLinkToken"
+        "401":
+          description: Unauthorized
+  /accounts:
+    get:
+      tags: []
+      summary: AccountsGet
+      description: Get accounts from server
+      operationId: get-accounts
+      parameters:
+      - name: account_id
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Shared Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
+        "401":
+          description: Unauthorized
+    put:
+      tags: []
+      summary: AccountsPut
+      description: Update existing account on server
+      operationId: put-accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+      responses:
+        "202":
+          description: Accepted
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+    post:
+      tags: []
+      summary: AccountsPost
+      description: Post new account to server
+      operationId: post-accounts
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Account"
+      responses:
+        "202":
+          description: Accepted
+          content: {}
+        "401":
+          description: Unauthorized
+    delete:
+      tags: []
+      summary: AccountsDelete
+      description: Delete account from server
+      operationId: delete-accounts
+      parameters:
+      - name: account_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+  /transactions:
+    get:
+      tags: []
+      summary: TransactionsGet
+      operationId: get-transactions
+      parameters:
+      - name: account_id
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+        "401":
+          description: Unauthorized
+    put:
+      tags: []
+      summary: TransactionsPut
+      operationId: put-transactions
+      parameters:
+      - name: transaction_id
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+      responses:
+        "202":
+          description: Accepted
+        "401":
+          description: Unauthorized
+    post:
+      tags: []
+      summary: TransactionsPost
+      operationId: post-transactions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Transaction"
+      responses:
+        "202":
+          description: Accepted
+        "401":
+          description: Unauthorized
+    delete:
+      tags: []
+      summary: TransactionsDelete
+      operationId: delete-transactions
+      parameters:
+      - name: transaction_id
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "202":
+          description: Accepted
+        "401":
+          description: Unauthorized
+  /transactions/sync:
+    get:
+      tags: []
+      summary: TransactionsSync
+      operationId: get-transactions-sync
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+  /liabilities:
+    get:
+      tags: []
+      summary: LiabilitiesGet
+      operationId: get-liabilities
+      parameters:
+      - name: account_id
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Liability"
+        "401":
+          description: Unauthorized
+components:
+  schemas:
+    PlaidLinkToken:
+      title: PlaidLinkToken
+      required:
+      - expiration
+      - link_token
+      - request_id
+      type: object
+      properties:
+        link_token:
+          type: string
+        expiration:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: z746fy75cxbnn
+        request_id:
+          type: string
+          x-stoplight:
+            id: 51jzykkymqshp
+      description: Basic Description of a PlaidLinkToken
+    Transaction:
+      title: Transaction
+      required:
+      - account_id
+      - amount
+      - created_at
+      - database_account_id
+      - date
+      - id
+      - name
+      - payment_channel
+      - payment_meta
+      - personal_finance_category_icon_url
+      - transaction_id
+      - transaction_type
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          x-stoplight:
+            id: ahbanq3cnoepr
+        amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: 0kwhuo6inhrv5
+        iso_currency_code:
+          type: string
+          x-stoplight:
+            id: hzcfc8clzipoe
+        unofficial_currency_code:
+          type: string
+          x-stoplight:
+            id: hgcjj972xjltv
+        check_number:
+          type: string
+          x-stoplight:
+            id: 1fr1kgmw5qduu
+        date:
+          type: string
+          format: date
+          x-stoplight:
+            id: j6o77dtmc8v9r
+        location:
+          $ref: "#/components/schemas/Location"
+        name:
+          type: string
+          x-stoplight:
+            id: t98jz7xjxt17d
+        merchant_name:
+          type: string
+          x-stoplight:
+            id: 3mhnl9gvycy25
+        original_description:
+          type: string
+          x-stoplight:
+            id: ojj53qkv91z5v
+        payment_meta:
+          $ref: "#/components/schemas/PaymentMeta"
+        pending:
+          type: boolean
+          x-stoplight:
+            id: xp34rbdj3y8rs
+        pending_transaction_id:
+          type: string
+          x-stoplight:
+            id: 8a9zg8egwrg2q
+        account_owner:
+          type: string
+          x-stoplight:
+            id: e3lnjdl67r1a3
+        transaction_id:
+          type: string
+          x-stoplight:
+            id: fhdgo4rduyoy5
+        transaction_type:
+          type: string
+          x-stoplight:
+            id: s88nxxpf9e0pz
+        logo_url:
+          type: string
+          format: uri
+          x-stoplight:
+            id: dhpmsy2j28a5i
+        website:
+          type: string
+          x-stoplight:
+            id: a5cktqtlt1v1p
+        authorized_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: 6jkn8dv17jneq
+        authorized_datetime:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: zj1zemohlnx5c
+        datetime:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 2qdq4v3g5v1zs
+        payment_channel:
+          type: string
+          x-stoplight:
+            id: 5hi3wdq7i94ws
+        personal_finance_category:
+          $ref: "#/components/schemas/PersonalFinanceCategory"
+        transaction_code:
+          type: string
+          x-stoplight:
+            id: 1gwwbxdjb9jqn
+        personal_finance_category_icon_url:
+          type: string
+          x-stoplight:
+            id: ccakf2y92kkoe
+        counterparties:
+          type: array
+          items:
+            $ref: "#/components/schemas/Counterparties"
+          x-stoplight:
+            id: 2zwyjcpl8m1xt
+        merchant_entity_id:
+          type: string
+          x-stoplight:
+            id: qkpxa8kjcd6lu
+        created_at:
+          type: string
+          x-stoplight:
+            id: va5lfae3dzkjd
+        updated_at:
+          type: string
+          x-stoplight:
+            id: b8wu4bnf5gys6
+        database_account_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: q72ohchq9n275
+    Account:
+      title: Account
+      required:
+      - account_id
+      - balances
+      - created_at
+      - mask
+      - name
+      - persistent_account_id
+      - type
+      - updated_at
+      - verification_insights
+      - verification_name
+      - verification_status
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: qxz8orw3mznru
+        account_id:
+          type: string
+          x-stoplight:
+            id: 4vki6zaa2kte2
+        balances:
+          $ref: "#/components/schemas/Balances"
+        mask:
+          type: string
+          x-stoplight:
+            id: 2sy4gnlj5wjb5
+        name:
+          type: string
+          x-stoplight:
+            id: n0iwkcibhvcps
+        official_name:
+          type: string
+          x-stoplight:
+            id: z51mipnn0oh0y
+        type:
+          type: string
+          x-stoplight:
+            id: 0vmonpvqp4hcl
+        subtype:
+          type: string
+          x-stoplight:
+            id: kqqqd77wx3se2
+        verification_status:
+          type: string
+          x-stoplight:
+            id: 96was9s18jdds
+        verification_name:
+          type: string
+          x-stoplight:
+            id: xcvqm97ypfoej
+        verification_insights:
+          $ref: "#/components/schemas/VerificationInsights"
+        persistent_account_id:
+          type: string
+          x-stoplight:
+            id: y3g0nrdhyrpfu
+        holder_category:
+          type: string
+          x-stoplight:
+            id: snim3su8w7su7
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 3v5zryyhtlf73
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: qziaj2zdxjb9d
+    Balances:
+      title: Balances
+      required:
+      - account_id
+      - created_at
+      - id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: ixyql2byact76
+        available:
+          type: number
+          format: double
+        current:
+          type: number
+          format: double
+          x-stoplight:
+            id: gtb1a5p40zesx
+        limit:
+          type: number
+          format: double
+          x-stoplight:
+            id: f0z4rvo6tpxjq
+        iso_currency_code:
+          type: string
+          x-stoplight:
+            id: p1sur3anwk2ry
+        unofficial_currency_code:
+          type: string
+          x-stoplight:
+            id: stzr6d68wi7rv
+        last_updated_datetime:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: ngybya4f2ei36
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 55resi5i3qo5s
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: vjlac25rbwuzh
+        account_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 9n0iclwgms17j
+    VerificationInsights:
+      title: VerificationInsights
+      required:
+      - account_id
+      - created_at
+      - id
+      - network_status
+      - previous_returns
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 3ma4xqm3gjeug
+        name_match_score:
+          type: integer
+        network_status:
+          $ref: "#/components/schemas/NetworkStatus"
+        previous_returns:
+          $ref: "#/components/schemas/PreviousReturns"
+        account_number_format:
+          type: string
+          x-stoplight:
+            id: llm1o2c6xg7da
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: h5czfevmktd5c
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: f3444n7iqxk9b
+        account_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 51jijh7b72kg7
+    NetworkStatus:
+      title: NetworkStatus
+      required:
+      - account_id
+      - created_at
+      - has_numbers_match
+      - id
+      - is_numbers_match_verified
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: rfsyxsfzka2je
+        has_numbers_match:
+          type: boolean
+        is_numbers_match_verified:
+          type: boolean
+          x-stoplight:
+            id: ha0bguxywu9bw
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: vqgt18b3we3nm
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: eti6zlqp18h7n
+        account_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: h6llnrwa8mln4
+    PreviousReturns:
+      title: PreviousReturns
+      required:
+      - account_id
+      - created_at
+      - has_previous_administrative_return
+      - id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 2lk7747mlp6fq
+        has_previous_administrative_return:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: adr8smqbf524u
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 0utduz3b6q3ft
+        account_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: mj3oj9dkerho0
+    Location:
+      title: Location
+      required:
+      - created_at
+      - id
+      - transaction_id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: getsbu0c0ju5n
+        address:
+          type: string
+        city:
+          type: string
+          x-stoplight:
+            id: 1fckhf9yw7p7o
+        region:
+          type: string
+          x-stoplight:
+            id: qrp9qdzj92roe
+        postal_code:
+          type: string
+          x-stoplight:
+            id: 5izv5p5jqzd6q
+        country:
+          type: string
+          x-stoplight:
+            id: j7pnerlbjmelg
+        lat:
+          type: string
+          x-stoplight:
+            id: ubyl5gllm18lp
+        lon:
+          type: string
+          x-stoplight:
+            id: 200yxi7mf20kz
+        store_number:
+          type: string
+          x-stoplight:
+            id: pzg4hc0glfax0
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 8jgduj1b5zzb4
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: g1dkcv0fua8bk
+        transaction_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: vk6hi9iin4m57
+    PaymentMeta:
+      title: PaymentMeta
+      required:
+      - created_at
+      - id
+      - transaction_id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: qahjh3h4kf25j
+        reference_number:
+          type: string
+        ppd_id:
+          type: string
+          x-stoplight:
+            id: 6t5qq7jshvuh3
+        payee:
+          type: string
+          x-stoplight:
+            id: 9ze1n26fyevcf
+        by_order_of:
+          type: string
+          x-stoplight:
+            id: 4r3dfsuhsmrgd
+        payment_method:
+          type: string
+          x-stoplight:
+            id: y05xl3tteugpq
+        payer:
+          type: string
+          x-stoplight:
+            id: cvjm8j3pn03pi
+        payment_processor:
+          type: string
+          x-stoplight:
+            id: 5p0nowwyssioi
+        reason:
+          type: string
+          x-stoplight:
+            id: tp1v9ywm4v1ll
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: ekfh7ve0x4wr3
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: eze1o8jzej1tf
+        transaction_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: lwxzgm7pj3cam
+    PersonalFinanceCategory:
+      title: PersonalFinanceCategory
+      required:
+      - created_at
+      - detailed
+      - id
+      - primary
+      - transaction_id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 8g0qssftdpvv4
+        primary:
+          type: string
+        detailed:
+          type: string
+          x-stoplight:
+            id: dys12tfd27usc
+        confidence_level:
+          type: string
+          x-stoplight:
+            id: uajd5i60kkgc5
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 3m3zkwfh21nhq
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: qrj2jwa39jndi
+        transaction_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: tl7puzipuvmhi
+    Counterparties:
+      title: Counterparties
+      required:
+      - created_at
+      - id
+      - name
+      - transaction_id
+      - type
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: yex5oxcidns9u
+        name:
+          type: string
+        entity_id:
+          type: string
+          x-stoplight:
+            id: nixg1hahtjtjc
+        type:
+          type: string
+          x-stoplight:
+            id: 8scynpomkbpmo
+        website:
+          type: string
+          x-stoplight:
+            id: 7mqk6442u07vl
+        logo_url:
+          type: string
+          x-stoplight:
+            id: oyu4zjdoy9aag
+        confidence_level:
+          type: string
+          x-stoplight:
+            id: tv5ux02b73h31
+        account_numbers:
+          $ref: "#/components/schemas/AccountNumbers"
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 6tryzz2beso5t
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 1qr2yax77uxqn
+        transaction_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: polsjulfbfy1x
+    AccountNumbers:
+      title: AccountNumbers
+      required:
+      - counterparties_id
+      - created_at
+      - id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: mj86vi79kayor
+        bacs:
+          $ref: "#/components/schemas/Bacs"
+        international:
+          $ref: "#/components/schemas/International"
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: ftc1aq2hw4x1x
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 1igfe6q530ade
+        counterparties_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 25xtos1xgmgfj
+    Bacs:
+      title: Bacs
+      required:
+      - account_numbers_id
+      - created_at
+      - id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 52eyj518psi4l
+        account:
+          type: string
+        sort_code:
+          type: string
+          x-stoplight:
+            id: 5z257a67o9eto
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 7nwbsxj7o37ho
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 9zwkfvbwkzrmp
+        account_numbers_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: yd1hd6x7qgdg9
+    International:
+      title: International
+      required:
+      - account_numbers_id
+      - created_at
+      - id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 1r1r7pf1z8byh
+        iban:
+          type: string
+        bic:
+          type: string
+          x-stoplight:
+            id: 16cwpt699yww6
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: ptna8rs7e2zpq
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: 36nfa0e20pxbx
+        account_numbers_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: npd7upc8ld071
+    Liability:
+      title: Liability
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: xzvtduh4j675i
+        credit:
+          type: array
+          items:
+            $ref: "#/components/schemas/Credit"
+          x-stoplight:
+            id: lpjp0l8oby09b
+        mortgage:
+          type: array
+          items:
+            $ref: "#/components/schemas/Mortgage"
+          x-stoplight:
+            id: ouror1kk3n1dw
+        student:
+          type: array
+          items:
+            $ref: "#/components/schemas/Student"
+          x-stoplight:
+            id: i7bqj245tsja7
+    Credit:
+      title: Credit
+      required:
+      - aprs
+      - created_at
+      - id
+      - laibility_id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+          x-stoplight:
+            id: jblqvkqdqh8z8
+        aprs:
+          type: array
+          items:
+            $ref: "#/components/schemas/APRs"
+          x-stoplight:
+            id: r0wrohroh8d8m
+        is_overdue:
+          type: boolean
+          x-stoplight:
+            id: i1wiv4py5r0gs
+        last_payment_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: pg33dbykykg96
+        last_payment_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: fhlyvhtm85dya
+        last_statement_issue_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: 9n9cq9rbs8qi5
+        last_statement_balance:
+          type: number
+          format: double
+          x-stoplight:
+            id: cnsgtvm9g7up7
+        minimum_payment_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: q43eaeh5avi0m
+        next_payment_due_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: kt2mf018d98lw
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: z8mi8o9tr2h60
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: owbwqddlmos7g
+        laibility_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 29r29x37elm7e
+    APRs:
+      title: APRs
+      required:
+      - apr_percentage
+      - apr_type
+      - created_at
+      - credit_id
+      - id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+        apr_percentage:
+          type: number
+          format: double
+          x-stoplight:
+            id: 7mvo3il6f4ukr
+        apr_type:
+          type: string
+          x-stoplight:
+            id: sw0h2o7p0k836
+        balance_subject_to_apr:
+          type: number
+          format: double
+          x-stoplight:
+            id: f9i0ssnokqu43
+        interest_charge_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: nqvlm23vsdq2n
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: e88e1k2sdg0au
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: jhf7o0rtfbdtc
+        credit_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 5g6ykhaqwvoh0
+    Mortgage:
+      title: Mortgage
+      required:
+      - account_id
+      - created_at
+      - id
+      - interest_rate
+      - liability_id
+      - property_address
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          x-stoplight:
+            id: e503uf13cvyfp
+        current_late_fee:
+          type: number
+          format: double
+          x-stoplight:
+            id: ytpto99e9pmj5
+        escrow_balance:
+          type: number
+          format: double
+          x-stoplight:
+            id: 8ycgebsvplvyk
+        has_pmi:
+          type: boolean
+          x-stoplight:
+            id: 2c32awul77mlw
+        has_prepayment_penalty:
+          type: boolean
+          x-stoplight:
+            id: w09sssb2fg4y6
+        interest_rate:
+          $ref: "#/components/schemas/InterestRate"
+        last_payment_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: dhwr9pojc8ma6
+        last_payment_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: 7cleoq7su06tj
+        loan_type_description:
+          type: string
+          x-stoplight:
+            id: 8bbz3vqqe72sb
+        loan_term:
+          type: string
+          x-stoplight:
+            id: 5yg0og8q2eqex
+        maturity_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: 32vl5jlilbf3h
+        next_monthly_payment:
+          type: number
+          format: double
+          x-stoplight:
+            id: 0r3ze5xtv218k
+        next_payment_due_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: kmldcltcl0sm0
+        origination_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: wicg8gxgunrfe
+        origination_principal_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: 03ymxbxxo2llg
+        past_due_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: 8rl658splf3kg
+        property_address:
+          $ref: "#/components/schemas/PropertyAddress"
+        ytd_interest_paid:
+          type: number
+          format: double
+          x-stoplight:
+            id: 9w0o3q5fuwzgy
+        ytd_principal_paid:
+          type: number
+          format: double
+          x-stoplight:
+            id: bftl0m8dwb5oo
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: d8ic3mfkjxyry
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: lnv3fi0r6vpw7
+        liability_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: c8hb39f77jybw
+    InterestRate:
+      title: InterestRate
+      required:
+      - created_at
+      - id
+      - mortgage_id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+        percentage:
+          type: number
+          format: double
+          x-stoplight:
+            id: 0fbfmnkjtivcr
+        type:
+          type: string
+          x-stoplight:
+            id: wgq75txq263a1
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: y57rk1sg6zv2u
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: e8l8jclw29wgx
+        mortgage_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: mkqt4z35y5jts
+    PropertyAddress:
+      required:
+      - created_at
+      - id
+      - mortgage_id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: bk3qsko2w7ukj
+        city:
+          type: string
+        country:
+          type: string
+        postal_code:
+          type: string
+        region:
+          type: string
+        street:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: lxk0vk0rjo9f1
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: dz9j91e1151lb
+        mortgage_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: cu1u9yiix9ba0
+      x-examples:
+        Example 1:
+          city: Malakoff
+          country: US
+          postal_code: "14236"
+          region: NY
+          street: 2992 Cameron Road
+    Student:
+      title: Student
+      required:
+      - created_at
+      - id
+      - interest_rate_percentage
+      - liability_id
+      - loan_status
+      - repayment_plan
+      - servicer_address
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          x-stoplight:
+            id: zrnzoccor4374
+        account_number:
+          type: string
+          x-stoplight:
+            id: ny81yltwyqqkb
+        disbursement_dates:
+          type: array
+          items:
+            type: string
+            format: date
+            x-stoplight:
+              id: 3u2c3d80543gz
+          x-stoplight:
+            id: xsl29c7deujsh
+        expected_payoff_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: sqz6ozk56pi9m
+        guarantor:
+          type: string
+          x-stoplight:
+            id: zycdpthbz8lrb
+        interest_rate_percentage:
+          type: number
+          format: double
+          x-stoplight:
+            id: wtrkheft24e3r
+        is_overdue:
+          type: boolean
+          x-stoplight:
+            id: bu06cwo5hfikv
+        last_payment_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: vs5bdw3gwos7y
+        last_payment_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: sfne18ntp338y
+        last_statement_balance:
+          type: number
+          format: double
+          x-stoplight:
+            id: r2da6eoashg9v
+        last_statement_issue_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: ovn3e4d20nw7g
+        loan_name:
+          type: string
+          x-stoplight:
+            id: fu9szu6lp7190
+        loan_status:
+          $ref: "#/components/schemas/LoanStatus"
+        minimum_payment_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: z3iokw8wxxqal
+        next_payment_due_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: eudbfw61fsu21
+        origination_date:
+          type: string
+          format: date
+          x-stoplight:
+            id: ospqe5wqr8r5i
+        origination_principal_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: sb7taan3bzpqa
+        outstanding_interest_amount:
+          type: number
+          format: double
+          x-stoplight:
+            id: kmrjzn2ddcrfc
+        payment_reference_number:
+          type: string
+          x-stoplight:
+            id: b6h3e5na8ygfj
+        repayment_plan:
+          $ref: "#/components/schemas/RepaymentPlan"
+        sequence_number:
+          type: string
+          x-stoplight:
+            id: xpk948mok1ge9
+        servicer_address:
+          $ref: "#/components/schemas/ServicerAddress"
+        ytd_interest_paid:
+          type: number
+          format: double
+          x-stoplight:
+            id: d8p5s6a0uk7ir
+        ytd_principal_paid:
+          type: number
+          format: double
+          x-stoplight:
+            id: ne5ynkbiy7tdl
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: yzwfwt1cvqsal
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: zipod0a16oj8l
+        liability_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: 1qemst9de0u8d
+    LoanStatus:
+      title: LoanStatus
+      required:
+      - created_at
+      - id
+      - student_id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        end_date:
+          type: string
+          x-stoplight:
+            id: sgzgnwfpn2rjy
+        type:
+          type: string
+          enum:
+          - cancelled
+          - charged off
+          - claim
+          - consolidated
+          - deferment
+          - delinquent
+          - discharged
+          - extension
+          - forbearance
+          - in grace
+          - in military
+          - in school
+          - not fully disbursed
+          - other
+          - paid in full
+          - refunded
+          - repayment
+          - transferred
+          - pending idr
+          x-stoplight:
+            id: 917pupwwbgyoz
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: arckpxiudf8xd
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: ld7f8y6ysbvje
+        student_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: vuxr8v5pd99g9
+    RepaymentPlan:
+      title: RepaymentPlan
+      required:
+      - created_at
+      - id
+      - student_id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+          x-stoplight:
+            id: wo8x6g4j34fp1
+        type:
+          type: string
+          enum:
+          - extended graduated
+          - extended standard
+          - graduated
+          - income-contingent repayment
+          - income-based repayment
+          - income-sensitive repayment
+          - interest-only
+          - other
+          - pay as you earn
+          - revised pay as you earn
+          - standard
+          - saving on a valuable education
+          - null
+          x-stoplight:
+            id: 36rwwbhwtz6z4
+        created_at:
+          type: string
+          format: date
+          x-stoplight:
+            id: k7tegah1is5zp
+        updated_at:
+          type: string
+          format: date
+          x-stoplight:
+            id: ogjted2okg3nf
+        student_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: bx6mhkb8vhvot
+    ServicerAddress:
+      title: ServicerAddress
+      required:
+      - created_at
+      - id
+      - student_id
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        city:
+          type: string
+          x-stoplight:
+            id: t58ycf6z3cush
+        region:
+          type: string
+          x-stoplight:
+            id: kravg17clerf3
+        street:
+          type: string
+          x-stoplight:
+            id: 8r0cf0019w9ko
+        postal_code:
+          type: string
+          x-stoplight:
+            id: 2jo0gqizywrf6
+        country:
+          type: string
+          x-stoplight:
+            id: f3579rqj6188u
+        created_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: w0oolx5g8qusc
+        updated_at:
+          type: string
+          format: date-time
+          x-stoplight:
+            id: uq4ugtw2z6nlu
+        student_id:
+          type: string
+          format: uuid
+          x-stoplight:
+            id: rw3lm1291h3ki
+    inline_response_200:
+      required:
+      - cursor
+      type: object
+      properties:
+        cursor:
+          type: string
+          x-stoplight:
+            id: vd40ecsetyje6
+  responses:
+    plaidLinkToken:
+      description: ""
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PlaidLinkToken"
+  requestBodies: {}
+  securitySchemes: {}

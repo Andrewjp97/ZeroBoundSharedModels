@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:ZeroBoundSharedModels}",
+            "name": "Debug ZeroBoundSharedModels",
+            "program": "${workspaceFolder:ZeroBoundSharedModels}/.build/debug/ZeroBoundSharedModels",
+            "preLaunchTask": "swift: Build Debug ZeroBoundSharedModels"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:ZeroBoundSharedModels}",
+            "name": "Release ZeroBoundSharedModels",
+            "program": "${workspaceFolder:ZeroBoundSharedModels}/.build/release/ZeroBoundSharedModels",
+            "preLaunchTask": "swift: Build Release ZeroBoundSharedModels"
+        }
+    ]
+}
