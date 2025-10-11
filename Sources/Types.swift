@@ -10,7 +10,7 @@ import struct Foundation.Data
 import struct Foundation.Date
 #endif
 /// A type that performs HTTP operations defined by the OpenAPI document.
-internal protocol APIProtocol: Sendable {
+internal protocol STCAPIProtocol: Sendable {
     /// PlaidLinkTokenCreate
     ///
     /// - Remark: HTTP `GET /plaid/link/token/create`.
@@ -82,7 +82,7 @@ internal protocol APIProtocol: Sendable {
 }
 
 /// Convenience overloads for operation inputs.
-extension APIProtocol {
+extension STCAPIProtocol {
     /// PlaidLinkTokenCreate
     ///
     /// - Remark: HTTP `GET /plaid/link/token/create`.

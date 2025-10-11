@@ -10,7 +10,7 @@ import struct Foundation.Data
 import struct Foundation.Date
 #endif
 import HTTPTypes
-extension APIProtocol {
+extension STCAPIProtocol {
     /// Registers each operation handler with the provided transport.
     /// - Parameters:
     ///   - transport: A transport to which to register the operation handlers.
@@ -165,7 +165,7 @@ extension APIProtocol {
     }
 }
 
-fileprivate extension UniversalServer where APIHandler: APIProtocol {
+fileprivate extension UniversalServer where APIHandler: STCAPIProtocol {
     /// PlaidLinkTokenCreate
     ///
     /// - Remark: HTTP `GET /plaid/link/token/create`.

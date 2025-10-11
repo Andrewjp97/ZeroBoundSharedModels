@@ -11,7 +11,7 @@ import struct Foundation.Date
 #endif
 import HTTPTypes
 /// This API communicates between the ZeroBound server and its clients
-internal struct Client: APIProtocol {
+internal struct Client: STCAPIProtocol {
     /// The underlying HTTP client.
     private let client: UniversalClient
     /// Creates a new client.
